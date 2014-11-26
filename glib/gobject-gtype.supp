@@ -1,0 +1,53 @@
+# -*- tab-width: 3; indent-tabs-mode: nil -*-
+
+# https://developer.gnome.org/gobject/stable/gobject-Type-Information.html#g-type-register-static
+
+# Inserted but never removed. Users include g_type_register_static and
+# g_type_register_fundamental
+{
+   GObject type_node_any_new_W
+   Memcheck:Leak
+   ...
+   fun:type_node_any_new_W
+}
+
+# Data set on the node created by type_node_any_new_W which is also bound to the
+# node. Used by g_type_register_fundamental and g_type_register_static.
+{
+   GObject type_data_make_W
+   Memcheck:Leak
+   ...
+   fun:type_data_make_W
+}
+
+{
+   GObject type_set_qdata_W
+   Memcheck:Leak
+   ...
+   fun:type_set_qdata_W
+}
+
+{
+   GObject GType g_type_add_interface_static
+   Memcheck:Leak
+   ...
+   fun:type_node_add_iface_entry_W
+   fun:type_add_interface_Wm
+   fun:g_type_add_interface_static
+}
+
+# signals are never released inside these privates...
+{
+   GObject notify signal
+   Memcheck:Leak
+   ...
+   fun:g_signal_new
+   fun:g_object_do_class_init
+}
+{
+   GObject notify signal
+   Memcheck:Leak
+   ...
+   fun:g_signal_new
+   fun:g_cancellable_class_init
+}
